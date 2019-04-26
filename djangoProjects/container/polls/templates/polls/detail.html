@@ -1,0 +1,15 @@
+<!--This is the page when you click on one of the poll questions.-->
+{% load static %}
+<link rel="stylesheet" type="text/css" href="{% static 'polls/detailStyle.css' %}">
+<!-- Load static loads the filder "static" and then loads style.css from it.-->
+<h1>{{ question.question_text }}</h1>
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+ 
+<form action="{% url 'polls:vote' question.id %}" method="post">
+{% csrf_token %}
+{% for choice in question.choice_set.all %}
+    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}">
+    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br>
+{% endfor %}
+<input type="submit" value="Vote">
+</form>
